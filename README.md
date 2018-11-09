@@ -3,5 +3,5 @@
 
 #### 安装指南
 ```
-composer require jikesen/jkpay --dev-master
+composer require jikesen/jkpay dev-master
 ```
