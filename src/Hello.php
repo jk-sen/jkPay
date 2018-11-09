@@ -11,8 +11,8 @@ namespace JkPay;
 
 class Hello
 {
-    public function say()
+    public function say(): string
     {
-        echo 'hello world';
+        return 'hello world';
     }
 }
