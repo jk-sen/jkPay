@@ -1,6 +1,7 @@
 {
     "name": "jikesen/jkpay",
     "description": "支付扩展包",
+    "keywords": ["pay", "支付宝"],
     "type": "library",
     "require": {
         "php": ">= 7.0"
@@ -11,5 +12,10 @@
             "email": "569045356@qq.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "jikesen\\jkPay":"src"
+        }
+    },
     "minimum-stability": "dev"
 }
