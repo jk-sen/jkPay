@@ -14,7 +14,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "jikesen\\jkPay":"src"
+            "jikesen\\jkPay\\":"src"
         }
     },
     "minimum-stability": "dev"
