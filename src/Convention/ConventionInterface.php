@@ -1,15 +1,19 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: user
+ * User: sen
  * Date: 2018/11/9
- * Time: 10:57
+ * Time: 22:05
  */
 
 namespace jikesen\jkPay\Convention;
 
 
-interface GateWayInterface
+interface ConventionInterface
 {
+    /**
+     * pay
+     * @return mixed
+     */
     public function pay();
 }
