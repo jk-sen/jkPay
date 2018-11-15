@@ -16,18 +16,22 @@ class Pay
      */
     protected $config;
 
-    public function test(): string
-    {
-        return "hello , this is jike_pay test demo";
-    }
-
     /**
-     * weixin & zhifubao 构造
-     * Pay constructor.
+     * JkPay constructor.
      * @param array $config
      */
     public function __construct(array $config)
     {
         $this->config = $config;
+    }
+
+    /**
+     * @param string $func 调用的支付方式 将调用统一支付接口来分发请求
+     * @param array $param 选择支付方式的配置
+     */
+    public static function __callStatic(string $func, array $param)
+    {
+        $app = new self($param);
+        echo $func;die;
     }
 }
