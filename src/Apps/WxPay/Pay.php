@@ -3,26 +3,31 @@
  * Created by PhpStorm.
  * User: user
  * Date: 2018/11/15
- * Time: 17:13
+ * Time: 17:51
  */
 
-namespace jikesen\jkPay\Apps;
+namespace jikesen\jkPay\Apps\WxPay;
 
 
 use jikesen\jkPay\Convention\ConventionAppInterface;
 
-class AliPay implements ConventionAppInterface
+class Pay implements ConventionAppInterface
 {
+    public function __construct($config)
+    {
+        $this->config = $config;
+    }
     /**
-     * @return mixed
+     * @inheritDoc
      */
     public function pay()
     {
         // TODO: Implement pay() method.
+        echo 'wx pay';
     }
 
     /**
-     * @return mixed
+     * @inheritDoc
      */
     public function query()
     {
@@ -30,7 +35,7 @@ class AliPay implements ConventionAppInterface
     }
 
     /**
-     * @return mixed
+     * @inheritDoc
      */
     public function refund()
     {
@@ -38,11 +43,10 @@ class AliPay implements ConventionAppInterface
     }
 
     /**
-     * @return mixed
+     * @inheritDoc
      */
     public function callback()
     {
         // TODO: Implement callback() method.
     }
-
 }

@@ -9,7 +9,7 @@
 namespace jikesen\jkPay\Convention;
 
 
-interface ConventionInterface
+interface ConventionPayInterface
 {
     /**
      * pay

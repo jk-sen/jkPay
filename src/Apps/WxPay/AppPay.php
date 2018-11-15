@@ -1,26 +1,24 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: sen
- * Date: 2018/11/9
- * Time: 22:40
+ * User: user
+ * Date: 2018/11/15
+ * Time: 18:07
  */
 
 namespace jikesen\jkPay\Apps\WxPay;
 
 
-use jikesen\jkPay\Convention\ConventionInterface;
+use jikesen\jkPay\Convention\ConventionPayInterface;
 
-/**
- * 微信app支付
- * Class AppPay
- * @package jikesen\jkPay\Apps\WxPay
- */
-class AppPay implements ConventionInterface
+class AppPay implements ConventionPayInterface
 {
-
+    /**
+     * @inheritDoc
+     */
     public function pay()
     {
         // TODO: Implement pay() method.
     }
+
 }

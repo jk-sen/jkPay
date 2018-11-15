@@ -32,6 +32,7 @@ class Pay
     public static function __callStatic(string $func, array $param)
     {
         $app = new self($param);
-        echo $func;die;
+        $pay_app = __NAMESPACE__ . '\\Apps\\' . $func . '\Pay';
+        return new $pay_app;
     }
 }
