@@ -12,10 +12,11 @@ namespace jikesen\jkPay\Convention;
 interface ConventionAppInterface
 {
     /**
-     * pay for an order
+     * @param $payType 支付类型
+     * @param $order_params 支付订单参数
      * @return mixed
      */
-    public function pay();
+    public function pay($payType, $order_params);
 
     /**
      * query an order

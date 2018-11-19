@@ -16,7 +16,7 @@ class AppPay implements ConventionPayInterface
     /**
      * @inheritDoc
      */
-    public function pay()
+    public function pay($param)
     {
         // TODO: Implement pay() method.
     }

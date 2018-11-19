@@ -6,7 +6,7 @@
  * Time: 22:44
  */
 
-namespace jikesen\jkPay\Tools;
+namespace jikesen\jkPay\Utils;
 
 
 class WxTool

@@ -20,19 +20,28 @@ class Pay
      * JkPay constructor.
      * @param array $config
      */
-    public function __construct(array $config)
+    public function __construct($config)
     {
         $this->config = $config;
     }
 
     /**
-     * @param string $func 调用的支付方式 将调用统一支付接口来分发请求
-     * @param array $param 选择支付方式的配置
+     * @param $func
+     * @param $config 全局配置
+     * @return mixed
      */
-    public static function __callStatic(string $func, array $param)
+    public static function __callStatic($func, $config)
     {
-        $app = new self($param);
+        $config = $config[0];
+        $app = new self($config);
+        return $app->pay($func);
+       /* $pay_app = __NAMESPACE__ . '\\Apps\\' . $func . '\Pay';
+        return new $pay_app($config);*/
+    }
+
+    public function pay($func)
+    {
         $pay_app = __NAMESPACE__ . '\\Apps\\' . $func . '\Pay';
-        return new $pay_app;
+        return new $pay_app($this->config);
     }
 }

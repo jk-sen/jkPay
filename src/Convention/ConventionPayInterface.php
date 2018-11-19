@@ -12,8 +12,8 @@ namespace jikesen\jkPay\Convention;
 interface ConventionPayInterface
 {
     /**
-     * pay
+     * @param $param 支付参数
      * @return mixed
      */
-    public function pay();
+    public function pay($param);
 }
