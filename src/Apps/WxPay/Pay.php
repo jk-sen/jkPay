@@ -11,6 +11,9 @@ namespace jikesen\jkPay\Apps\WxPay;
 
 use jikesen\jkPay\Convention\ConventionAppInterface;
 
+/**
+ * @property  config
+ */
 class Pay implements ConventionAppInterface
 {
     public function __construct($config)

@@ -10,12 +10,13 @@ namespace jikesen\jkPay\Apps\AliPay;
 
 
 use jikesen\jkPay\Convention\ConventionPayInterface;
+use jikesen\jkPay\Utils\AliTool;
 use jikesen\jkPay\Utils\Config;
 
 class AppPay implements ConventionPayInterface
 {
     /**
-     * @var string 接口名称
+     * @var string 接口方法
      */
     protected $method = 'alipay.trade.app.pay';
     /**
@@ -25,16 +26,19 @@ class AppPay implements ConventionPayInterface
 
     /**
      * @inheritDoc
+     * @throws \jikesen\jkPay\Exceptions\Exception
      */
     public function pay($param)
     {
         //组装签名参数
-        $param['method'] = $this->method;
-        $param['biz_content'] = json_decode($param, true);
+        $param['method']                      = $this->method;
+        $param['biz_content']                 = json_decode($param['biz_content'], true);
         $param['biz_content']['product_code'] = $this->product_code;
-        $param['biz_content'] = json_encode($param['biz_content']);
-        $_t = Config::getInstance();
-        pre($_t->private_key);
+        $param['biz_content']                 = json_encode($param['biz_content']);
+
+        //签名
+        $t = new AliTool();
+        echo $t->generateSign($param);die;
     }
 
 }

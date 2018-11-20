@@ -9,18 +9,23 @@
 namespace jikesen\jkPay\Utils;
 
 
-class Config
+use jikesen\jkPay\Convention\ConfigInterFace;
+
+class Config implements ConfigInterFace
 {
     /**
-     * @var string 支付宝私钥
+     * @var string $private key
      */
     protected $private_key = '';
 
     /**
-     * @var string 支付宝公钥
+     * @var string public key
      */
     protected $public_key = '';
 
+    /**
+     * @var instance of config
+     */
     private static $_instance = null;
 
     /**
@@ -42,17 +47,25 @@ class Config
      */
     public static function getInstance()
     {
-        if (!(self::$_instance instanceof Config)) {
+        if (!(self::$_instance instanceof ConfigInterFace)) {
             self::$_instance = new Config();
         }
         return self::$_instance;
     }
 
+    /**
+     * @param $property_name
+     * @return null
+     */
     public function __get($property_name)
     {
         return isset($this->$property_name) ? $this->$property_name : null;
     }
 
+    /**
+     * @param $property_name
+     * @param $value
+     */
     public function __set($property_name, $value)
     {
         $this->$property_name = $value;

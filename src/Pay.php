@@ -35,8 +35,6 @@ class Pay
         $config = $config[0];
         $app = new self($config);
         return $app->pay($func);
-       /* $pay_app = __NAMESPACE__ . '\\Apps\\' . $func . '\Pay';
-        return new $pay_app($config);*/
     }
 
     public function pay($func)

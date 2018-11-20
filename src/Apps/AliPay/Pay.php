@@ -32,7 +32,7 @@ class Pay implements ConventionAppInterface
      */
     public function __construct(array $config)
     {
-        $this->prepay      = [
+        $this->prepay    = [
             'app_id'      => $config['app_id'],
             'method'      => '', //不同的支付类型不同的方法
             'format'      => 'JSON',
@@ -47,6 +47,7 @@ class Pay implements ConventionAppInterface
         $cg = Config::getInstance();
         $cg->private_key = $config['private_key'];
         $cg->public_key  = $config['public_key'];
+        $cg->charset     = $config['charset'];
     }
 
     /**
@@ -92,21 +93,24 @@ class Pay implements ConventionAppInterface
      */
     public function pay($payType, $order_params)
     {
+        $order_params = $order_params[0];
         // 获取客户端调用类型 获取app 接口类 检测有没有该类
         $pay_class = __NAMESPACE__ . '\\' . ucfirst($payType) . 'Pay';
         //确定类存在
         if (!class_exists($pay_class)) {
             throw new AppNotExistException('类不存在');
         }
-
         $this->prepay['return_url'] = $order_params['return_url'] ?? $order_params['return_url'];
         unset($order_params['return_url']);
         $this->prepay['biz_content'] = json_encode($order_params);
-        $pay                         = new $pay_class;
+        $pay = new $pay_class;
         //确认继承关系检测实例
         if ($pay instanceof ConventionPayInterface) {
-            return $pay->pay($this->prepay);
+            if (!empty($this->prepay)) {
+                return $pay->pay($this->prepay);
+            }
         }
+
         throw new AppNotExistException("pay type {$payType} must be ConventionPayInterface 的实例");
     }
 }

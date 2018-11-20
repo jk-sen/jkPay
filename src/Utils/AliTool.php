@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection ALL */
+
 /**
  * Created by PhpStorm.
  * User: sen
@@ -8,6 +9,9 @@
 
 namespace jikesen\jkPay\Utils;
 
+use jikesen\jkPay\Exceptions\ConfigException;
+use jikesen\jkPay\Exceptions\Exception;
+
 /**
  * 支付宝签名 等工具
  * Class ZfbTool
@@ -15,50 +19,60 @@ namespace jikesen\jkPay\Utils;
  */
 class AliTool
 {
-    public static function generateSign($params, $signType = "RSA")
+    public $charset;
+
+    private $fileCharset = "UTF-8";
+
+    /**
+     * @param $params
+     * @return string
+     * @throws Exception
+     */
+    public function generateSign($params): string
     {
-        pre($params);
-        //return $this->sign($this->getSignContent($params), $signType);
-    }
+        $privateKey = Config::getInstance()->private_key;
 
-    protected function sign($data, $signType = "RSA")
-    {
-        if ($this->checkEmpty($this->rsaPrivateKeyFilePath)) {
-            $priKey = $this->rsaPrivateKey;
-            $res    = "-----BEGIN RSA PRIVATE KEY-----\n" .
-                wordwrap($priKey, 64, "\n", true) .
-                "\n-----END RSA PRIVATE KEY-----";
-        } else {
-            $priKey = file_get_contents($this->rsaPrivateKeyFilePath);
-            $res    = openssl_get_privatekey($priKey);
+        if(!isset($privateKey)){
+            throw new ConfigException('the private key is must be set! check your pay config');
         }
 
-        ($res) or die('您使用的私钥格式错误，请检查RSA私钥配置');
+        unset($params['sign'],$params['return_url']);
 
-        if ("RSA2" == $signType) {
-            openssl_sign($data, $sign, $res, OPENSSL_ALGO_SHA256);
-        } else {
-            openssl_sign($data, $sign, $res);
+        if (is_null($privateKey)) {
+            throw new Exception('私钥不能为空');
         }
 
-        if (!$this->checkEmpty($this->rsaPrivateKeyFilePath)) {
-            openssl_free_key($res);
-        }
+        //暂不支持配置文件
+        $_privateKey = "-----BEGIN RSA PRIVATE KEY-----\n" .
+            wordwrap($privateKey, 64, "\n", true) .
+            "\n-----END RSA PRIVATE KEY-----";
+
+        //原始未签名字符串
+        $_params     = $this->getSignContent($params);
+
+        openssl_sign($_params, $sign, $_privateKey, OPENSSL_ALGO_SHA256);
+
         $sign = base64_encode($sign);
+
         return $sign;
     }
 
-    public function getSignContent($params)
+    /**
+     * @param $params
+     * @return string
+     */
+    protected function getSignContent($params): string
     {
         ksort($params);
 
         $stringToBeSigned = "";
-        $i                = 0;
+
+        $i = 0;
         foreach ($params as $k => $v) {
-            if (false === $this->checkEmpty($v) && "@" != substr($v, 0, 1)) {
+            if (false === self::checkEmpty($v) && "@" != substr($v, 0, 1)) {
 
                 // 转换成目标字符集
-                $v = $this->characet($v, $this->postCharset);
+                $v = $this->characet($v, Config::getInstance()->charset);
 
                 if ($i == 0) {
                     $stringToBeSigned .= "$k" . "=" . "$v";
@@ -68,4 +82,42 @@ class AliTool
                 $i++;
             }
         }
+        unset ($k, $v);
+        return $stringToBeSigned;
     }
+
+
+    /**
+     * 校验$value是否非空
+     *  if not set ,return true;
+     *    if is null , return true;
+     **/
+    protected function checkEmpty($value): bool
+    {
+        if (!isset($value))
+            return true;
+        if ($value === null)
+            return true;
+        if (trim($value) === "")
+            return true;
+
+        return false;
+    }
+
+    /**
+     * 转换字符集编码
+     * @param $data
+     * @param $targetCharset
+     * @return string
+     */
+    protected function characet($data, $targetCharset)
+    {
+        if (!empty($data)) {
+            $fileType = $this->fileCharset;
+            if (strcasecmp($fileType, $targetCharset) != 0) {
+                $data = mb_convert_encoding($data, $targetCharset, $fileType);
+            }
+        }
+        return $data;
+    }
+}
