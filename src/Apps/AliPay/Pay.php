@@ -44,10 +44,11 @@ class Pay implements ConventionAppInterface
             'notify_url'  => $config['notify_url'],
             'biz_content' => '',
         ];
-        $cg = Config::getInstance();
+        $cg              = Config::getInstance();
         $cg->private_key = $config['private_key'];
         $cg->public_key  = $config['public_key'];
         $cg->charset     = $config['charset'];
+        $cg->return_url  = $config['return_url'];
     }
 
     /**
@@ -100,9 +101,9 @@ class Pay implements ConventionAppInterface
         if (!class_exists($pay_class)) {
             throw new AppNotExistException('类不存在');
         }
-        $this->prepay['return_url'] = $order_params['return_url'] ?? $order_params['return_url'];
-        unset($order_params['return_url']);
+        $this->prepay['return_url'] = Config::getInstance()->return_url ?? Config::getInstance()->return_url;
         $this->prepay['biz_content'] = json_encode($order_params);
+
         $pay = new $pay_class;
         //确认继承关系检测实例
         if ($pay instanceof ConventionPayInterface) {

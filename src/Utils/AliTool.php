@@ -36,8 +36,6 @@ class AliTool
             throw new ConfigException('the private key is must be set! check your pay config');
         }
 
-        unset($params['sign'],$params['return_url']);
-
         if (is_null($privateKey)) {
             throw new Exception('私钥不能为空');
         }

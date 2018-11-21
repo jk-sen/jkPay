@@ -12,6 +12,7 @@ namespace jikesen\jkPay\Apps\AliPay;
 use jikesen\jkPay\Convention\ConventionPayInterface;
 use jikesen\jkPay\Utils\AliTool;
 use jikesen\jkPay\Utils\Config;
+use Symfony\Component\HttpFoundation\Response;
 
 class AppPay implements ConventionPayInterface
 {
@@ -38,7 +39,9 @@ class AppPay implements ConventionPayInterface
 
         //签名
         $t = new AliTool();
-        echo $t->generateSign($param);die;
+        $param['sign'] =  $t->generateSign($param);
+
+        return Response::create(http_build_query($param));
     }
 
 }
