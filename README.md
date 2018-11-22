@@ -28,6 +28,7 @@ composer require jikesen/jkpay dev-master
 [1]: https://mp.weixin.qq.com/ "微信公众平台"
 [2]: https://open.weixin.qq.com/ "微信开放平台"
 [3]: https://pay.weixin.qq.com/ "微信商户平台"
+[4]: https://github.com/guzzle/guzzle/issues/1935 "guzzlehttp_curl erron "
 
 ##### 微信公众平台
 打开 [微信公众平台][1] 
@@ -55,5 +56,7 @@ composer require jikesen/jkpay dev-master
 ```angular2html
     
 ```
+##### 使用guzzlehttp时php curl请求 需要设置 php.ini --> curl.cainfo 测试环境基于 Laravel5.4
+解决方案 [guzzlehttp_curl erron ][4]
 
 
