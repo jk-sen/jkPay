@@ -34,7 +34,7 @@ class H5Pay extends BasePay
             echo $e->getMessage();
         }
         $param['sign'] = $sign;
-        $res = $this->unifiedOrder($param);
+        $res = $this->unifiedOrder(WxTool::ToXml($param));
         return is_array($res) ? $res : WxTool::FromXml($res);
     }
 

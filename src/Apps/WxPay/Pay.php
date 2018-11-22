@@ -38,7 +38,7 @@ class Pay implements ConventionAppInterface
         $this->prepay  = [
             'appid'            => $config['appid'],
             'mch_id'           => $config['mch_id'],
-            'nonce_str'        => 'xdgqqk75x7brlzrn321i80j01m552p5e',
+            'nonce_str'        => WxTool::getNonceStr(),
             'sign'             => '',
             'trade_type'       => '',
             'notify_url'       => $config['notify_url'],
@@ -47,6 +47,14 @@ class Pay implements ConventionAppInterface
         $cg            = Config::getInstance();
         $cg->sign_type = $config['sign_type'] ?? 'MD5';
         $cg->wx_key    = $config['wx_key'];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function verify()
+    {
+        // TODO: Implement verify() method.
     }
 
     /**

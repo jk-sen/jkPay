@@ -9,7 +9,9 @@
 namespace jikesen\jkPay\Apps\WxPay;
 
 
+use GuzzleHttp\Client;
 use jikesen\jkPay\Convention\ConventionPayInterface;
+use jikesen\jkPay\Utils\WxTool;
 use Symfony\Component\HttpFoundation\Request;
 
 class BasePay implements ConventionPayInterface
@@ -31,10 +33,19 @@ class BasePay implements ConventionPayInterface
     }
 
     /**
-     * 生成微信预支付订单/统一下单支付
+     * @param $order_params
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \jikesen\jkPay\Exceptions\DataException
      */
     public function unifiedOrder($order_params)
     {
-        return Request::create($this->unifiedorder_url,'POST',$order_params);
+        $client = new Client();
+
+        $request = new \GuzzleHttp\Psr7\Request('POST', $this->unifiedorder_url
+            , ['Content-Type' => 'text/xml; charset=UTF8'], $order_params);
+
+        $res     = $client->send($request);
+
+        return is_array($res) ? $res : WxTool::FromXml($res->getBody());
     }
 }

@@ -35,4 +35,10 @@ interface ConventionAppInterface
      * @return mixed
      */
     public function callback();
+
+    /**
+     * verify notce request
+     * @return mixed
+     */
+    public function verify();
 }

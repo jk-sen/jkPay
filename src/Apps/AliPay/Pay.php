@@ -115,4 +115,12 @@ class Pay implements ConventionAppInterface
 
         throw new AppNotExistException("pay type {$payType} must be ConventionPayInterface 的实例");
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function verify()
+    {
+        // TODO: Implement verify() method.
+    }
 }

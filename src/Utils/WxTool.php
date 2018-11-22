@@ -113,11 +113,30 @@ class WxTool
      */
     public static function FromXml($xml): array
     {
-        if (!$xml) {
-            throw new DataException("xml数据异常！");
+
+        $xmlObj = simplexml_load_string($xml);
+        return $xmlObj ?
+            $arr = array(
+                'return_code'   => (string) $xmlObj->return_code,
+                'return_msg'    => (string) $xmlObj->return_msg,
+                'appid'         => (string) $xmlObj->appid,
+                'mch_id'        => (string) $xmlObj->mch_id,
+                'nonce_str'     => (string) $xmlObj->nonce_str,
+                'sign'          => (string) $xmlObj->sign,
+                'result_code'   => (string) $xmlObj->result_code,
+                'prepay_id'     => (string) $xmlObj->prepay_id,
+                'trade_type'    => (string) $xmlObj->trade_type,
+                'mweb_url'      => (string) $xmlObj->mweb_url,
+                'agent_id'      => (string) $xmlObj->agent_id,
+                'code_url'      => (string) $xmlObj->code_url,
+            ) : false;
+
+        /*if (!$xml) {
+            throw new DataException('Convert To Array Error! Invalid Xml!');
         }
-        //将XML转为array 禁止引用外部xml实体
+        file_put_contents('a.txt',$xml);
         libxml_disable_entity_loader(true);
-        return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA)), true);
+
+        return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA), JSON_UNESCAPED_UNICODE), true);*/
     }
 }
