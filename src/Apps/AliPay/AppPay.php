@@ -11,7 +11,6 @@ namespace jikesen\jkPay\Apps\AliPay;
 
 use jikesen\jkPay\Convention\ConventionPayInterface;
 use jikesen\jkPay\Utils\AliTool;
-use jikesen\jkPay\Utils\Config;
 use Symfony\Component\HttpFoundation\Response;
 
 class AppPay implements ConventionPayInterface
@@ -37,7 +36,7 @@ class AppPay implements ConventionPayInterface
         $param['biz_content']['product_code'] = $this->product_code;
         $param['biz_content']                 = json_encode($param['biz_content']);
 
-        //签名
+        //make sign
         $t = new AliTool();
         $param['sign'] =  $t->generateSign($param);
 

@@ -12,7 +12,6 @@ namespace jikesen\jkPay\Apps\WxPay;
 use GuzzleHttp\Client;
 use jikesen\jkPay\Convention\ConventionPayInterface;
 use jikesen\jkPay\Utils\WxTool;
-use Symfony\Component\HttpFoundation\Request;
 
 class BasePay implements ConventionPayInterface
 {
@@ -34,10 +33,11 @@ class BasePay implements ConventionPayInterface
 
     /**
      * @param $order_params
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \jikesen\jkPay\Exceptions\DataException
      */
-    public function unifiedOrder($order_params)
+    protected function unifiedOrder($order_params)
     {
         $client = new Client();
 

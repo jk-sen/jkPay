@@ -14,18 +14,16 @@ use jikesen\jkPay\Exceptions\DataException;
 
 class WxTool
 {
-    public $signType = '';
-
     /**
      *
      * 产生随机字符串，不长于32位
      * @param int $length
      * @return string
      */
-    public static function getNonceStr($length = 32): string
+    public static function getNonceStr($length = 32) : string
     {
-        $chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-        $str   = "";
+        $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        $str   = '';
         for ($i = 0; $i < $length; $i++) {
             $str .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
         }
@@ -38,7 +36,7 @@ class WxTool
      * @return string
      * @throws ConfigException
      */
-    public function generateSign($params): string
+    public function generateSign($params) : string
     {
         $c        = Config::getInstance();
         $signType = $c->__get('sign_type');
@@ -46,21 +44,23 @@ class WxTool
         if (is_null($wxkey)) {
             throw new ConfigException("微信key 不存在，请检查您的配置");
         }
-        //签名步骤一：按字典序排序参数
+        //step 1: ksrot
         ksort($params);
         $string = $this->ToUrlParams($params);
-        //签名步骤二：在string后加入KEY
+
+        //step 2：add key after string
         $string = $string . "&key=" . $wxkey;
-        //签名步骤三：MD5加密或者HMAC-SHA256
-        if ($signType == "MD5") {
+
+        //step 3：MD5 Encryption or HMAC-SHA256
+        if ($signType == 'MD5') {
             $string = md5($string);
-        } else if ($signType == "HMAC-SHA256") {
-            $string = hash_hmac("sha256", $string, $wxkey);
+        } else if ($signType == 'HMAC-SHA256') {
+            $string = hash_hmac('sha256', $string, $wxkey);
         } else {
             throw new ConfigException("签名类型不支持！");
         }
 
-        //签名步骤四：所有字符转为大写
+        //step 4：All characters are capitalized
         $result = strtoupper($string);
         return $result;
     }
@@ -69,7 +69,7 @@ class WxTool
     /**
      * 格式化参数格式化成url参数
      */
-    public function ToUrlParams($param): string
+    public function ToUrlParams($param) : string
     {
         $buff = "";
         foreach ($param as $k => $v) {
@@ -87,7 +87,7 @@ class WxTool
      * @return string
      * @throws DataException
      */
-    public static function ToXml($param): string
+    public static function ToXml($param) : string
     {
         if (!is_array($param) || count($param) <= 0) {
             throw new DataException("数组数据异常！");
@@ -106,37 +106,17 @@ class WxTool
     }
 
     /**
-     * 将xml转为array
-     * @param string $xml
-     * @throws WxPayException
+     * @param $xml
+     * @return array
      * @throws DataException
      */
-    public static function FromXml($xml): array
+    public static function FromXml($xml) : array
     {
-
-        $xmlObj = simplexml_load_string($xml);
-        return $xmlObj ?
-            $arr = array(
-                'return_code'   => (string) $xmlObj->return_code,
-                'return_msg'    => (string) $xmlObj->return_msg,
-                'appid'         => (string) $xmlObj->appid,
-                'mch_id'        => (string) $xmlObj->mch_id,
-                'nonce_str'     => (string) $xmlObj->nonce_str,
-                'sign'          => (string) $xmlObj->sign,
-                'result_code'   => (string) $xmlObj->result_code,
-                'prepay_id'     => (string) $xmlObj->prepay_id,
-                'trade_type'    => (string) $xmlObj->trade_type,
-                'mweb_url'      => (string) $xmlObj->mweb_url,
-                'agent_id'      => (string) $xmlObj->agent_id,
-                'code_url'      => (string) $xmlObj->code_url,
-            ) : false;
-
-        /*if (!$xml) {
+        if (!$xml) {
             throw new DataException('Convert To Array Error! Invalid Xml!');
         }
-        file_put_contents('a.txt',$xml);
         libxml_disable_entity_loader(true);
 
-        return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA), JSON_UNESCAPED_UNICODE), true);*/
+        return json_decode(json_encode(simplexml_load_string($xml, 'SimpleXMLElement', LIBXML_NOCDATA), JSON_UNESCAPED_UNICODE), true);
     }
 }
