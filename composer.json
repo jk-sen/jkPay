@@ -7,7 +7,9 @@
         "php": ">= 7.0",
         "ext-openssl": "*",
         "ext-json": "*",
-        "symfony/http-foundation": "^4.2@dev"
+        "symfony/http-foundation": "^4.2@dev",
+        "ext-libxml": "*",
+        "ext-simplexml": "*"
     },
     "authors": [
         {
