@@ -18,7 +18,7 @@ class AppPay implements ConventionPayInterface
      */
     public function pay($param)
     {
-        // TODO: Implement pay() method.
+       echo 'app 5.6dev';
     }
 
 }
