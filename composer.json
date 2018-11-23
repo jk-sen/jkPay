@@ -9,8 +9,7 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-simplexml": "*",
-        "guzzlehttp/guzzle": "^6.0",
-        "monolog/monolog": "*"
+        "guzzlehttp/guzzle": "^6.0"
     },
     "authors": [
         {
