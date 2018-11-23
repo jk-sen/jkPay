@@ -34,11 +34,11 @@ interface ConventionAppInterface
      * say yes or no to servers
      * @return mixed
      */
-    public function callback();
+    public function echoSuccess();
 
     /**
-     * verify notce request
+     * @param $data
      * @return mixed
      */
-    public function verify();
+    public function verify($data);
 }
