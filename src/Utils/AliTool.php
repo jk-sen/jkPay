@@ -28,7 +28,7 @@ class AliTool
      * @return string
      * @throws Exception
      */
-    public function generateSign($params): string
+    public function generateSign($params)
     {
         $privateKey = Config::getInstance()->private_key;
 
@@ -59,7 +59,7 @@ class AliTool
      * @param $params
      * @return string
      */
-    protected function getSignContent($params): string
+    protected function getSignContent($params)
     {
         ksort($params);
 
@@ -90,7 +90,7 @@ class AliTool
      *  if not set ,return true;
      *    if is null , return true;
      **/
-    protected function checkEmpty($value): bool
+    protected function checkEmpty($value)
     {
         if (!isset($value))
             return true;

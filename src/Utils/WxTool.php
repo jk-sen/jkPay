@@ -20,7 +20,7 @@ class WxTool
      * @param int $length
      * @return string
      */
-    public static function getNonceStr($length = 32) : string
+    public static function getNonceStr($length = 32)
     {
         $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
         $str   = '';
@@ -36,7 +36,7 @@ class WxTool
      * @return string
      * @throws ConfigException
      */
-    public function generateSign($params) : string
+    public function generateSign($params)
     {
         $c        = Config::getInstance();
         $signType = $c->__get('sign_type');
@@ -69,7 +69,7 @@ class WxTool
     /**
      * 格式化参数格式化成url参数
      */
-    public function ToUrlParams($param) : string
+    public function ToUrlParams($param)
     {
         $buff = "";
         foreach ($param as $k => $v) {
@@ -87,7 +87,7 @@ class WxTool
      * @return string
      * @throws DataException
      */
-    public static function ToXml($param) : string
+    public static function ToXml($param)
     {
         if (!is_array($param) || count($param) <= 0) {
             throw new DataException("数组数据异常！");
@@ -110,7 +110,7 @@ class WxTool
      * @return array
      * @throws DataException
      */
-    public static function FromXml($xml) : array
+    public static function FromXml($xml)
     {
         if (!$xml) {
             throw new DataException('Convert To Array Error! Invalid Xml!');

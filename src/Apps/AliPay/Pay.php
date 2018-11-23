@@ -10,6 +10,7 @@
 namespace jikesen\jkPay\Apps\AliPay;
 
 
+use GuzzleHttp\Psr7\Request;
 use jikesen\jkPay\Convention\ConventionAppInterface;
 use jikesen\jkPay\Convention\ConventionPayInterface;
 use jikesen\jkPay\Exceptions\AppNotExistException;

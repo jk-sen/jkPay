@@ -42,10 +42,10 @@ class Pay implements ConventionAppInterface
             'sign'             => '',
             'trade_type'       => '',
             'notify_url'       => $config['notify_url'],
-            'spbill_create_ip' => Request::createFromGlobals()->getClientIp() ?? '127.0.0.1',
+            'spbill_create_ip' => !empty(Request::createFromGlobals()->getClientIp())?Request::createFromGlobals()->getClientIp():'127.0.0.1',
         ];
         $cg            = Config::getInstance();
-        $cg->sign_type = $config['sign_type'] ?? 'MD5';
+        $cg->sign_type = empty($config['sign_type']) ?'MD5':$config['sign_type'];
         $cg->wx_key    = $config['wx_key'];
     }
 

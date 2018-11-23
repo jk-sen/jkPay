@@ -4,7 +4,7 @@
     "keywords": ["pay", "支付宝"],
     "type": "library",
     "require": {
-        "php": ">= 7.0",
+        "php": ">= 5.6",
         "symfony/http-foundation": "^3.0|^4.0",
         "ext-json": "*",
         "ext-libxml": "*",
