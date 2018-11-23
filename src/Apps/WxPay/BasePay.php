@@ -40,12 +40,10 @@ class BasePay implements ConventionPayInterface
     protected function unifiedOrder($order_params)
     {
         $client = new Client();
-
         $request = new \GuzzleHttp\Psr7\Request('POST', $this->unifiedorder_url
             , ['Content-Type' => 'text/xml; charset=UTF8'], $order_params);
 
-        $res     = $client->send($request);
-
-        return is_array($res) ? $res : WxTool::FromXml($res->getBody());
+        $res = $client->send($request);
+        return is_array($res) ? $res : WxTool::FromXml($res->getBody()->getContents());
     }
 }

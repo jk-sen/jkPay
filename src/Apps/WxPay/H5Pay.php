@@ -21,6 +21,8 @@ class H5Pay extends BasePay
     /**
      * @param 支付参数 $param
      * @return mixed|void
+     * @throws \jikesen\jkPay\Exceptions\DataException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function pay($param)
     {
@@ -30,12 +32,11 @@ class H5Pay extends BasePay
         $t = new WxTool();
         try {
             $sign = $t->generateSign($param);
+            $param['sign'] = $sign;
         } catch (ConfigException $e) {
-            echo $e->getMessage();
+            return ['err' => $e->getMessage()];
         }
-        $param['sign'] = $sign;
-        $res = $this->unifiedOrder(WxTool::ToXml($param));
-        return is_array($res) ? $res : WxTool::FromXml($res);
+        return $this->unifiedOrder(WxTool::ToXml($param));
     }
 
     public function tradeType()
