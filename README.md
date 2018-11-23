@@ -3,7 +3,7 @@
 
 #### 安装指南
 ```
-composer require jikesen/jkpay dev-master --prefer-dist
+composer require jikesen/jkpay dev-master --prefer-source --prefer-dist
 
 ```
 ### 微信开发指引
