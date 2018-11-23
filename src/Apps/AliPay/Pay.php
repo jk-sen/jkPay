@@ -81,14 +81,6 @@ class Pay implements ConventionAppInterface
     }
 
     /**
-     * @inheritDoc
-     */
-    public function callback()
-    {
-        // TODO: Implement callback() method.
-    }
-
-    /**
      * @param $payType
      * @param $order_params
      * @return mixed
@@ -97,17 +89,19 @@ class Pay implements ConventionAppInterface
     public function pay($payType, $order_params)
     {
         $order_params = $order_params[0];
-        // 获取客户端调用类型 获取app 接口类 检测有没有该类
+
+        // Gets the client call type gets the app interface class to detect if there is a class
         $pay_class = __NAMESPACE__ . '\\' . ucfirst($payType) . 'Pay';
-        //确定类存在
+
+        // Make sure classes exist
         if (!class_exists($pay_class)) {
             throw new AppNotExistException('类不存在');
         }
-        $this->prepay['return_url'] = Config::getInstance()->return_url ?? Config::getInstance()->return_url;
+        $this->prepay['return_url']  = Config::getInstance()->return_url ?? Config::getInstance()->return_url;
         $this->prepay['biz_content'] = json_encode($order_params);
 
+        // Verify the inheritance relationship detection instance
         $pay = new $pay_class;
-        //确认继承关系检测实例
         if ($pay instanceof ConventionPayInterface) {
             if (!empty($this->prepay)) {
                 return $pay->pay($this->prepay);
@@ -120,8 +114,16 @@ class Pay implements ConventionAppInterface
     /**
      * @inheritDoc
      */
-    public function verify()
+    public function verify($data)
     {
         // TODO: Implement verify() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function echoSuccess()
+    {
+        // TODO: Implement echoSuccess() method.
     }
 }

@@ -15,12 +15,12 @@ use jikesen\jkPay\Exceptions\DataException;
 class WxTool
 {
     /**
-     *
      * 产生随机字符串，不长于32位
      * @param int $length
      * @return string
      */
-    public static function getNonceStr($length = 32)
+
+    public static function GetNonceStr($length = 32) : string
     {
         $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
         $str   = '';
@@ -36,7 +36,8 @@ class WxTool
      * @return string
      * @throws ConfigException
      */
-    public function generateSign($params)
+
+    public static function GenerateSign($params) : string
     {
         $c        = Config::getInstance();
         $signType = $c->__get('sign_type');
@@ -46,7 +47,7 @@ class WxTool
         }
         //step 1: ksrot
         ksort($params);
-        $string = $this->ToUrlParams($params);
+        $string = self::ToUrlParams($params);
 
         //step 2：add key after string
         $string = $string . "&key=" . $wxkey;
@@ -67,9 +68,12 @@ class WxTool
 
 
     /**
-     * 格式化参数格式化成url参数
+     * Format parameters into url parameters
+     * @param $param
+     * @return string
      */
-    public function ToUrlParams($param)
+
+    public static function ToUrlParams($param) : string
     {
         $buff = "";
         foreach ($param as $k => $v) {
@@ -90,7 +94,7 @@ class WxTool
     public static function ToXml($param)
     {
         if (!is_array($param) || count($param) <= 0) {
-            throw new DataException("数组数据异常！");
+            throw new DataException("Array data exception");
         }
 
         $xml = "<xml>";

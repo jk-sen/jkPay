@@ -27,7 +27,7 @@ class Pay
 
     /**
      * @param $func
-     * @param $config 全局配置
+     * @param $config  Global configuration
      * @return mixed
      */
     public static function __callStatic($func, $config)

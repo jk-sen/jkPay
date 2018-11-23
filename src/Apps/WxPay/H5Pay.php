@@ -19,19 +19,17 @@ use jikesen\jkPay\Utils\WxTool;
 class H5Pay extends BasePay
 {
     /**
-     * @param 支付参数 $param
+     * @param pay params $param
      * @return mixed|void
      * @throws \jikesen\jkPay\Exceptions\DataException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function pay($param)
     {
-        //微信生成签名
         $param['trade_type'] = $this->tradeType();
 
-        $t = new WxTool();
         try {
-            $sign = $t->generateSign($param);
+            $sign = WxTool::GenerateSign($param);
             $param['sign'] = $sign;
         } catch (ConfigException $e) {
             return ['err' => $e->getMessage()];

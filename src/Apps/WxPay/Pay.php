@@ -11,11 +11,13 @@ namespace jikesen\jkPay\Apps\WxPay;
 
 use jikesen\jkPay\Convention\ConventionAppInterface;
 use jikesen\jkPay\Convention\ConventionPayInterface;
-use jikesen\jkPay\Convention\支付类型;
-use jikesen\jkPay\Convention\支付订单参数;
+use jikesen\jkPay\Convention\SignException;
+use jikesen\jkPay\Exceptions\AppNotExistException;
+use jikesen\jkPay\Exceptions\DataException;
 use jikesen\jkPay\Utils\Config;
 use jikesen\jkPay\Utils\WxTool;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @property  config
@@ -33,34 +35,59 @@ class Pay implements ConventionAppInterface
      */
     protected $prepay = null;
 
+    /**
+     * Pay constructor.
+     * @param $config
+     */
     public function __construct($config)
     {
-        $this->prepay  = [
+        $this->prepay = [
             'appid'            => $config['appid'],
             'mch_id'           => $config['mch_id'],
-            'nonce_str'        => WxTool::getNonceStr(),
+            'nonce_str'        => WxTool::GetNonceStr(),
             'sign'             => '',
             'trade_type'       => '',
             'notify_url'       => $config['notify_url'],
             'spbill_create_ip' => !empty(Request::createFromGlobals()->getClientIp())?Request::createFromGlobals()->getClientIp():'127.0.0.1',
         ];
-        $cg            = Config::getInstance();
-        $cg->sign_type = empty($config['sign_type']) ?'MD5':$config['sign_type'];
-        $cg->wx_key    = $config['wx_key'];
+
+        $cg           = Config::getInstance();
+        $cg->__set('sign_type', $config['sign_type'] ?? 'MD5');
+        $cg->__set('wx_key', $config['wx_key']);
     }
 
     /**
-     * @inheritDoc
+     * @param null $data
+     * @return mixed|void
+     * @throws DataException
+     * @throws \jikesen\jkPay\Exceptions\ConfigException
+     * @throws SignException
      */
-    public function verify()
+    public function verify($data = null)
     {
-        // TODO: Implement verify() method.
+        $data = $data ?? Request::createFromGlobals()->getContent();
+
+        if ($data == null) {
+            throw new DataException('WeChat returns an XML data error');
+        }
+
+        // change xml data
+        if (!is_array($data)) {
+            $data = WxTool::FromXml($data);
+        }
+
+        // Verify the signature
+        if (WxTool::GenerateSign($data) === $data['sign']) {
+            return $data;
+        }
+        throw new SignException('WeChat returns a data signature validation error');
     }
 
     /**
      * @param $payType
      * @param $platform_order_parameters
      * @return mixed
+     * @throws AppNotExistException
      */
     public function __call($payType, $platform_order_parameters)
     {
@@ -77,25 +104,29 @@ class Pay implements ConventionAppInterface
 
     /**
      * @inheritDoc
+     * @throws AppNotExistException
      */
     public function pay($payType, $order_params)
     {
         $this->prepay = array_merge($order_params[0], $this->prepay);
-        // 获取客户端调用类型 获取app 接口类 检测有没有该类
+
+        // Gets the client call type gets the app interface class to detect if there is a class
         $pay_class = __NAMESPACE__ . '\\' . ucfirst($payType) . 'Pay';
-        //确定类存在
+
+        // Make sure classes exist
         if (!class_exists($pay_class)) {
-            throw new AppNotExistException('类不存在');
+            throw new AppNotExistException('Call a class that does not exist');
         }
+
+        // Verify the inheritance relationship detection instance
         $pay = new $pay_class;
-        //确认继承关系检测实例
         if ($pay instanceof ConventionPayInterface) {
             if (!empty($this->prepay)) {
                 return $pay->pay($this->prepay);
             }
         }
 
-        throw new AppNotExistException("pay type {$payType} must be ConventionPayInterface 的实例");
+        throw new AppNotExistException("pay type {$payType} must be ConventionPayInterface‘s Instance");
     }
 
     /**
@@ -108,9 +139,14 @@ class Pay implements ConventionAppInterface
 
     /**
      * @inheritDoc
+     * @throws DataException
      */
-    public function callback()
+    public function echoSuccess()
     {
-        // TODO: Implement callback() method.
+        $response = new Response(
+            WxTool::toXml(['return_code' => 'SUCCESS', 'return_msg' => 'OK']),
+            200,
+            ['Content-Type' => 'application/xml']);
+        return $response->send()->getContent();
     }
 }

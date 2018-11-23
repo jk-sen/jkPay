@@ -36,7 +36,7 @@ class AppPay implements ConventionPayInterface
         $param['biz_content']['product_code'] = $this->product_code;
         $param['biz_content']                 = json_encode($param['biz_content']);
 
-        //make sign
+        // make sign
         $t = new AliTool();
         $param['sign'] =  $t->generateSign($param);
 
