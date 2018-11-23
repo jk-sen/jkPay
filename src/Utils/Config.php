@@ -45,7 +45,7 @@ class Config implements ConfigInterFace
     /**
      * @return Config|null
      */
-    public static function getInstance(): object
+    public static function getInstance()
     {
         if (!(self::$_instance instanceof ConfigInterFace)) {
             self::$_instance = new Config();
