@@ -2,8 +2,8 @@
 /**
  * Created by PhpStorm.
  * User: user
- * Date: 2018/11/19
- * Time: 14:11
+ * Date: 2018/11/23
+ * Time: 16:22
  */
 
 namespace jikesen\jkPay\Apps\AliPay;
@@ -11,23 +11,24 @@ namespace jikesen\jkPay\Apps\AliPay;
 
 use jikesen\jkPay\Convention\ConventionPayInterface;
 
-class WebPay implements ConventionPayInterface
+class H5Pay implements ConventionPayInterface
 {
     /**
      * @var string Interface methods
      */
-    protected $method = 'alipay.trade.page.pay';
+    protected $method = 'alipay.trade.wap.pay';
 
     /**
      * @var string Sales product code
      */
-    protected $product_code = 'FAST_INSTANT_TRADE_PAY';
+    protected $product_code = 'QUICK_WAP_WAY';
 
     /**
      * @inheritDoc
      */
     public function pay($param)
     {
-        return 'web';
+        // TODO: Implement pay() method.
     }
+
 }

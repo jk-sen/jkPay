@@ -16,14 +16,14 @@ use jikesen\jkPay\Utils\WxTool;
 class BasePay implements ConventionPayInterface
 {
     /**
-     * 微信统一下单Url
+     * WeChat unifiedorder Url
      * @var string
      */
     protected $unifiedorder_url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 
     /**
-     * 构造预支付
-     * @param 支付参数 $param
+     * build pay
+     * @param  $param
      * @return mixed|void
      */
     public function pay($param)

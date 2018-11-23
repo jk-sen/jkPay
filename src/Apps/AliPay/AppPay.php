@@ -16,11 +16,12 @@ use Symfony\Component\HttpFoundation\Response;
 class AppPay implements ConventionPayInterface
 {
     /**
-     * @var string 接口方法
+     * @var string Interface methods
      */
     protected $method = 'alipay.trade.app.pay';
+
     /**
-     * @var string 销售产品码
+     * @var string Sales product code
      */
     protected $product_code = 'QUICK_MSECURITY_PAY';
 
@@ -30,7 +31,7 @@ class AppPay implements ConventionPayInterface
      */
     public function pay($param)
     {
-        //组装签名参数
+        // Assembly signature parameter
         $param['method']                      = $this->method;
         $param['biz_content']                 = json_decode($param['biz_content'], true);
         $param['biz_content']['product_code'] = $this->product_code;

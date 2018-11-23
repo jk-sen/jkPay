@@ -11,11 +11,6 @@ namespace jikesen\jkPay\Apps\WxPay;
 use jikesen\jkPay\Exceptions\ConfigException;
 use jikesen\jkPay\Utils\WxTool;
 
-/**
- * 微信H5支付
- * Class H5Pay
- * @package jikesen\jkPay\Apps\WxPay
- */
 class H5Pay extends BasePay
 {
     /**
