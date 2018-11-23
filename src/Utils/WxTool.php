@@ -42,9 +42,11 @@ class WxTool
         $c        = Config::getInstance();
         $signType = $c->__get('sign_type');
         $wxkey    = $c->__get('wx_key');
+
         if (is_null($wxkey)) {
-            throw new ConfigException("微信key 不存在，请检查您的配置");
+            throw new ConfigException("WeChat key does not exist, please check your configuration");
         }
+
         //step 1: ksrot
         ksort($params);
         $string = self::ToUrlParams($params);
@@ -58,7 +60,7 @@ class WxTool
         } else if ($signType == 'HMAC-SHA256') {
             $string = hash_hmac('sha256', $string, $wxkey);
         } else {
-            throw new ConfigException("签名类型不支持！");
+            throw new ConfigException("Signature types are not supported");
         }
 
         //step 4：All characters are capitalized
