@@ -1,9 +1,9 @@
 # jkPay
 集合微信支付宝支付
 
-#### 安装指南
+#### 安装指南新 7.1
 ```
-composer require jikesen/jkpay dev-master --prefer-source
+composer require jikesen/jkpay dev-master --prefer-source 
 
 ```
 ### 微信开发指引
