@@ -48,11 +48,10 @@ class Pay implements ConventionAppInterface
             'sign'             => '',
             'trade_type'       => '',
             'notify_url'       => $config['notify_url'],
-            'spbill_create_ip' => Request::createFromGlobals()->getClientIp() ?? '127.0.0.1',
+            'spbill_create_ip' => Request::createFromGlobals()->getClientIp() ? Request::createFromGlobals()->getClientIp() : '127.0.0.1',
         ];
-
         $cg = Config::getInstance();
-        $cg->__set('sign_type', $config['sign_type'] ?? 'MD5');
+        $cg->__set('sign_type', !empty($config['sign_type']) ? $config['sign_type'] : 'MD5');
         $cg->__set('wx_key', $config['wx_key']);
     }
 
@@ -65,7 +64,7 @@ class Pay implements ConventionAppInterface
      */
     public function verify($data = null)
     {
-        $data = $data ?? Request::createFromGlobals()->getContent();
+        $data = $data != null ? $data : Request::createFromGlobals()->getContent();
 
         if ($data == null) {
             throw new DataException('WeChat returns an XML data error');

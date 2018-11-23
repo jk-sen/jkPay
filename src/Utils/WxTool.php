@@ -20,7 +20,7 @@ class WxTool
      * @return string
      */
 
-    public static function GetNonceStr($length = 32) : string
+    public static function GetNonceStr($length = 32)
     {
         $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
         $str   = '';
@@ -37,7 +37,7 @@ class WxTool
      * @throws ConfigException
      */
 
-    public static function GenerateSign($params) : string
+    public static function GenerateSign($params)
     {
         $c        = Config::getInstance();
         $signType = $c->__get('sign_type');
@@ -73,7 +73,7 @@ class WxTool
      * @return string
      */
 
-    public static function ToUrlParams($param) : string
+    public static function ToUrlParams($param)
     {
         $buff = "";
         foreach ($param as $k => $v) {
