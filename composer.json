@@ -10,7 +10,7 @@
         "ext-libxml": "*",
         "ext-simplexml": "*",
         "guzzlehttp/guzzle": "^6.0",
-        "monolog/monolog": "^2.0@dev"
+        "monolog/monolog": "*"
     },
     "authors": [
         {
