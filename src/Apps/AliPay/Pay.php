@@ -38,10 +38,10 @@ class Pay implements ConventionAppInterface
             'app_id'      => $config['app_id'],
             'method'      => '', //不同的支付类型不同的方法
             'format'      => 'JSON',
-            'charset'     => 'utf-8',
+            'charset'     => $config['charset'],
             'sign_type'   => 'RSA2',
             'sign'        => '',
-            'timestamp'   => date("Y-m-d H:i:s"),
+            'timestamp'   => '2018-11-27 07:48:25',//date("Y-m-d H:i:s"),
             'version'     => '1.0',
             'notify_url'  => $config['notify_url'],
             'biz_content' => '',

@@ -21,18 +21,19 @@ class AliTool
 {
     public $charset;
 
-    private $fileCharset = "UTF-8";
+    static $fileCharset = "UTF-8";
 
     /**
      * @param $params
      * @return string
      * @throws Exception
      */
-    public function generateSign($params)
+    public static function GenerateSign($params)
     {
-        $privateKey = Config::getInstance()->private_key;
+        $c          = Config::getInstance();
+        $privateKey = $c->__get('private_key');
 
-        if(!isset($privateKey)){
+        if (!isset($privateKey)) {
             throw new ConfigException('the private key is must be set! check your pay config');
         }
 
@@ -46,7 +47,7 @@ class AliTool
             "\n-----END RSA PRIVATE KEY-----";
 
         //原始未签名字符串
-        $_params     = $this->getSignContent($params);
+        $_params = self::GetSignContent($params);
 
         openssl_sign($_params, $sign, $_privateKey, OPENSSL_ALGO_SHA256);
 
@@ -59,7 +60,7 @@ class AliTool
      * @param $params
      * @return string
      */
-    protected function getSignContent($params)
+    protected static function GetSignContent($params)
     {
         ksort($params);
 
@@ -70,7 +71,7 @@ class AliTool
             if (false === self::checkEmpty($v) && "@" != substr($v, 0, 1)) {
 
                 // 转换成目标字符集
-                $v = $this->characet($v, Config::getInstance()->charset);
+                $v = self::characet($v, Config::getInstance()->charset);
 
                 if ($i == 0) {
                     $stringToBeSigned .= "$k" . "=" . "$v";
@@ -90,7 +91,7 @@ class AliTool
      *  if not set ,return true;
      *    if is null , return true;
      **/
-    protected function checkEmpty($value)
+    public static function checkEmpty($value)
     {
         if (!isset($value))
             return true;
@@ -108,14 +109,39 @@ class AliTool
      * @param $targetCharset
      * @return string
      */
-    protected function characet($data, $targetCharset)
+    public static function characet($data, $targetCharset)
     {
         if (!empty($data)) {
-            $fileType = $this->fileCharset;
+            $fileType = static::$fileCharset;
             if (strcasecmp($fileType, $targetCharset) != 0) {
                 $data = mb_convert_encoding($data, $targetCharset, $fileType);
             }
         }
         return $data;
+    }
+
+    //此方法对value做urlencode
+    public static function GetSignContentUrlencode($params)
+    {
+        ksort($params);
+
+        $stringToBeSigned = "";
+        $i                = 0;
+        foreach ($params as $k => $v) {
+            if (false === self::checkEmpty($v) && "@" != substr($v, 0, 1)) {
+                // 转换成目标字符集
+                $v = self::characet($v, static::$fileCharset);
+
+                if ($i == 0) {
+                    $stringToBeSigned .= "$k" . "=" . urlencode($v);
+                } else {
+                    $stringToBeSigned .= "&" . "$k" . "=" . urlencode($v);
+                }
+                $i++;
+            }
+        }
+
+        unset ($k, $v);
+        return $stringToBeSigned;
     }
 }
