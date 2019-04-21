@@ -29,7 +29,7 @@ class AppPay implements ConventionPayInterface
      * @inheritDoc
      * @throws \jikesen\jkPay\Exceptions\Exception
      */
-    public function pay($param)
+    public function pay($param, $gatWayUrl)
     {
         // Assembly signature parameter
         $param['method']                      = $this->method;
@@ -38,8 +38,8 @@ class AppPay implements ConventionPayInterface
         $param['biz_content']                 = json_encode($param['biz_content']);
 
         // make sign
-        $t = new AliTool();
-        $param['sign'] =  $t->generateSign($param);
+        $t             = new AliTool();
+        $param['sign'] = $t->generateSign($param);
 
         return Response::create(http_build_query($param));
     }

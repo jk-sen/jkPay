@@ -18,6 +18,7 @@ class Pay
 
     /**
      * JkPay constructor.
+     *
      * @param array $config
      */
     public function __construct($config)
@@ -28,12 +29,13 @@ class Pay
     /**
      * @param $func
      * @param $config  Global configuration
+     *
      * @return mixed
      */
     public static function __callStatic($func, $config)
     {
-        $config = $config[0];
-        $app = new self($config);
+        //$config = $config[0];
+        $app    = new self(...$config);
         return $app->pay($func);
     }
 

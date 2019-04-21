@@ -16,9 +16,9 @@ class AppPay implements ConventionPayInterface
     /**
      * @inheritDoc
      */
-    public function pay($param)
+    public function pay($param, $gatWayUrl)
     {
-       echo 'app 5.6dev';
+        echo 'app 5.6dev';
     }
 
 }

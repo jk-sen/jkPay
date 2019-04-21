@@ -13,7 +13,9 @@ interface ConventionPayInterface
 {
     /**
      * @param $param 支付参数
+     * @param $gatWayUrl
+     *
      * @return mixed
      */
-    public function pay($param);
+    public function pay($param,$gatWayUrl);
 }

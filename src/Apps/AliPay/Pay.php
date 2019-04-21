@@ -18,10 +18,11 @@ use jikesen\jkPay\Utils\Config;
 
 class Pay implements ConventionAppInterface
 {
+
     /**
      * @var string 统一支付网关
      */
-    public $trade_pay = 'https://openapi.alipay.com/gateway.do';
+    public $gatewayUrl = "https://openapi.alipay.com/gateway.do";
 
     /**
      * @var null 预支付参数
@@ -30,6 +31,7 @@ class Pay implements ConventionAppInterface
 
     /**
      * Pay constructor.
+     *
      * @param array $config 传入支付宝的支付配置文件
      */
     public function __construct(array $config)
@@ -56,6 +58,7 @@ class Pay implements ConventionAppInterface
     /**
      * @param $payType
      * @param $platform_order_parameters
+     *
      * @return mixed
      * @throws AppNotExistException
      */
@@ -83,6 +86,7 @@ class Pay implements ConventionAppInterface
     /**
      * @param $payType
      * @param $order_params
+     *
      * @return mixed
      * @throws AppNotExistException
      */
@@ -97,14 +101,14 @@ class Pay implements ConventionAppInterface
         if (!class_exists($pay_class)) {
             throw new AppNotExistException('类不存在');
         }
+
         $this->prepay['return_url']  = Config::getInstance()->return_url ?? Config::getInstance()->return_url;
         $this->prepay['biz_content'] = json_encode($order_params);
-
         // Verify the inheritance relationship detection instance
         $pay = new $pay_class;
         if ($pay instanceof ConventionPayInterface) {
             if (!empty($this->prepay)) {
-                return $pay->pay($this->prepay);
+                return $pay->pay($this->prepay, $this->gatewayUrl);
             }
         }
 

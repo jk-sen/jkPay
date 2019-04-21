@@ -17,29 +17,33 @@ class BasePay implements ConventionPayInterface
 {
     /**
      * WeChat unifiedorder Url
+     *
      * @var string
      */
     protected $unifiedorder_url = 'https://api.mch.weixin.qq.com/pay/unifiedorder';
 
     /**
      * build pay
+     *
      * @param  $param
+     *
      * @return mixed|void
      */
-    public function pay($param)
+    public function pay($param, $gatWayUrl)
     {
         // TODO: Implement pay() method.
     }
 
     /**
      * @param $order_params
+     *
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \jikesen\jkPay\Exceptions\DataException
      */
     protected function unifiedOrder($order_params)
     {
-        $client = new Client();
+        $client  = new Client();
         $request = new \GuzzleHttp\Psr7\Request('POST', $this->unifiedorder_url
             , ['Content-Type' => 'text/xml; charset=UTF8'], $order_params);
 
