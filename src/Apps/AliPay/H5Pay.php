@@ -59,7 +59,7 @@ class H5Pay implements ConventionPayInterface
     {
 
         if ($method == 'GET') {
-            echo 'sadasd';
+            echo 'get';
         }
 
         $Html = "<form id='aliPaySubmit' name='aliPaySubmit' action='" . $gatWayUrl . "?charset=" . $param['charset'] . "' method='{$method}'>";
