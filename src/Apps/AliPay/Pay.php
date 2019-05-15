@@ -14,6 +14,7 @@ use GuzzleHttp\Psr7\Request;
 use jikesen\jkPay\Convention\ConventionAppInterface;
 use jikesen\jkPay\Convention\ConventionPayInterface;
 use jikesen\jkPay\Exceptions\AppNotExistException;
+use jikesen\jkPay\Utils\AliTool;
 use jikesen\jkPay\Utils\Config;
 
 class Pay implements ConventionAppInterface
@@ -118,9 +119,13 @@ class Pay implements ConventionAppInterface
     /**
      * @inheritDoc
      */
-    public function verify($data)
+    public function verify($data = null)
     {
-        // TODO: Implement verify() method.
+        if ($data == null) {
+            $request = \Symfony\Component\HttpFoundation\Request::createFromGlobals();
+            $resouse = $request->getContent();
+            AliTool::pushdtk('支付宝回调：' . json_encode($resouse), true, 'jk');
+        }
     }
 
     /**
