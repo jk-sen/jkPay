@@ -1,6 +1,8 @@
 # jkPay
 集合微信支付宝支付
 
+[![Build Status](https://travis-ci.org/michaelliao/openweixin.svg?branch=master)](https://travis-ci.org/michaelliao/openweixin)
+
 #### 安装指南
 ```
 composer require jikesen/jkpay dev-master --prefer-source

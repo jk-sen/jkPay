@@ -35,7 +35,7 @@ class Pay
     public static function __callStatic($func, $config)
     {
         //$config = $config[0];
-        $app    = new self(...$config);
+        $app = new self(...$config);
         return $app->pay($func);
     }
 
